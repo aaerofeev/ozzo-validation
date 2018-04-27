@@ -22,9 +22,9 @@ func TestIn(t *testing.T) {
 		{"t0", []interface{}{1, 2}, 0, ""},
 		{"t1", []interface{}{1, 2}, 1, ""},
 		{"t2", []interface{}{1, 2}, 2, ""},
-		{"t3", []interface{}{1, 2}, 3, "must be a valid value"},
-		{"t4", []interface{}{}, 3, "must be a valid value"},
-		{"t5", []interface{}{1, 2}, "1", "must be a valid value"},
+		{"t3", []interface{}{1, 2}, 3, "in|[1 2]"},
+		{"t4", []interface{}{}, 3, "in|[]"},
+		{"t5", []interface{}{1, 2}, "1", "in|[1 2]"},
 		{"t6", []interface{}{1, 2}, &v, ""},
 		{"t7", []interface{}{1, 2}, v2, ""},
 	}
@@ -38,7 +38,7 @@ func TestIn(t *testing.T) {
 
 func Test_InRule_Error(t *testing.T) {
 	r := In(1, 2, 3)
-	assert.Equal(t, "must be a valid value", r.message)
+	assert.Equal(t, "in", r.message)
 	r.Error("123")
 	assert.Equal(t, "123", r.message)
 }

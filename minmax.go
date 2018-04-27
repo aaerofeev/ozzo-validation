@@ -33,7 +33,7 @@ func Min(min interface{}) *ThresholdRule {
 	return &ThresholdRule{
 		threshold: min,
 		operator:  greaterEqualThan,
-		message:   fmt.Sprintf("must be no less than %v", min),
+		message:   fmt.Sprintf("less|%v", min),
 	}
 }
 
@@ -46,7 +46,7 @@ func Max(max interface{}) *ThresholdRule {
 	return &ThresholdRule{
 		threshold: max,
 		operator:  lessEqualThan,
-		message:   fmt.Sprintf("must be no greater than %v", max),
+		message:   fmt.Sprintf("greater|%v", max),
 	}
 }
 
@@ -54,10 +54,10 @@ func Max(max interface{}) *ThresholdRule {
 func (r *ThresholdRule) Exclusive() *ThresholdRule {
 	if r.operator == greaterEqualThan {
 		r.operator = greaterThan
-		r.message = fmt.Sprintf("must be greater than %v", r.threshold)
+		r.message = fmt.Sprintf("greater|%v", r.threshold)
 	} else if r.operator == lessEqualThan {
 		r.operator = lessThan
-		r.message = fmt.Sprintf("must be less than %v", r.threshold)
+		r.message = fmt.Sprintf("less|%v", r.threshold)
 	}
 	return r
 }
@@ -101,18 +101,18 @@ func (r *ThresholdRule) Validate(value interface{}) error {
 	case reflect.Struct:
 		t, ok := r.threshold.(time.Time)
 		if !ok {
-			return fmt.Errorf("type not supported: %v", rv.Type())
+			return fmt.Errorf("type|%v", rv.Type())
 		}
 		v, ok := value.(time.Time)
 		if !ok {
-			return fmt.Errorf("cannot convert %v to time.Time", reflect.TypeOf(value))
+			return fmt.Errorf("type_time|%v", reflect.TypeOf(value))
 		}
 		if v.IsZero() || r.compareTime(t, v) {
 			return nil
 		}
 
 	default:
-		return fmt.Errorf("type not supported: %v", rv.Type())
+		return fmt.Errorf("type|%v", rv.Type())
 	}
 
 	return errors.New(r.message)

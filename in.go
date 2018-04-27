@@ -4,7 +4,10 @@
 
 package validation
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // In returns a validation rule that checks if a value can be found in the given list of values.
 // Note that the value being checked and the possible range of values must be of the same type.
@@ -12,7 +15,7 @@ import "errors"
 func In(values ...interface{}) *InRule {
 	return &InRule{
 		elements: values,
-		message:  "must be a valid value",
+		message:  "in",
 	}
 }
 
@@ -33,7 +36,7 @@ func (r *InRule) Validate(value interface{}) error {
 			return nil
 		}
 	}
-	return errors.New(r.message)
+	return errors.New(fmt.Sprintf("%s|%+v", r.message, r.elements))
 }
 
 // Error sets the error message for the rule.

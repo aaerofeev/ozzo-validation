@@ -96,8 +96,8 @@ func TestValidateStruct(t *testing.T) {
 		{"t6.1", &m2, []*FieldRules{Field(&m2.E)}, "E: error 123."},
 		{"t6.2", &m2, []*FieldRules{Field(&m2.E, Skip)}, ""},
 		// Required, NotNil
-		{"t7.1", &m2, []*FieldRules{Field(&m2.F, Required)}, "F: cannot be blank."},
-		{"t7.2", &m2, []*FieldRules{Field(&m2.F, NotNil)}, "F: is required."},
+		{"t7.1", &m2, []*FieldRules{Field(&m2.F, Required)}, "F: required."},
+		{"t7.2", &m2, []*FieldRules{Field(&m2.F, NotNil)}, "F: not_nil."},
 		{"t7.3", &m2, []*FieldRules{Field(&m2.E, Required, Skip)}, ""},
 		{"t7.4", &m2, []*FieldRules{Field(&m2.E, NotNil, Skip)}, ""},
 		// embedded structs
@@ -107,7 +107,7 @@ func TestValidateStruct(t *testing.T) {
 		{"t8.4", &m3, []*FieldRules{Field(&m3.Model3)}, "A: error abc."},
 		{"t8.5", &m4, []*FieldRules{Field(&m4.M3)}, ""},
 		{"t8.6", &m4, []*FieldRules{Field(&m4.Model3)}, ""},
-		{"t8.7", &m3, []*FieldRules{Field(&m3.A, Required), Field(&m3.B, Required)}, "A: cannot be blank; B: cannot be blank."},
+		{"t8.7", &m3, []*FieldRules{Field(&m3.A, Required), Field(&m3.B, Required)}, "A: required; B: required."},
 		{"t8.8", &m3, []*FieldRules{Field(&m4.A, Required)}, "field #0 cannot be found in the struct"},
 		// internal error
 		{"t9.1", &m5, []*FieldRules{Field(&m5.A, &validateAbc{}), Field(&m5.B, Required), Field(&m5.A, &validateInternalError{})}, "error internal"},
@@ -132,6 +132,6 @@ func TestValidateStruct(t *testing.T) {
 		Field(&a.Value, Required, Length(5, 10)),
 	)
 	if assert.NotNil(t, err) {
-		assert.Equal(t, "Value: the length must be between 5 and 10.", err.Error())
+		assert.Equal(t, "Value: length_between|5,10.", err.Error())
 	}
 }

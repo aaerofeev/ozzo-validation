@@ -7,6 +7,7 @@ package validation
 import (
 	"errors"
 	"time"
+	"fmt"
 )
 
 type DateRule struct {
@@ -30,8 +31,8 @@ type DateRule struct {
 func Date(layout string) *DateRule {
 	return &DateRule{
 		layout:       layout,
-		message:      "must be a valid date",
-		rangeMessage: "the data is out of range",
+		message:      "date",
+		rangeMessage: "date_range",
 	}
 }
 
@@ -77,7 +78,7 @@ func (r *DateRule) Validate(value interface{}) error {
 	}
 
 	if !r.min.IsZero() && r.min.After(date) || !r.max.IsZero() && date.After(r.max) {
-		return errors.New(r.rangeMessage)
+		return errors.New(fmt.Sprintf("%s|%s,%s", r.rangeMessage, r.min, r.max))
 	}
 
 	return nil

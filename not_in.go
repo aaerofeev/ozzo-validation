@@ -6,6 +6,7 @@ package validation
 
 import (
 	"errors"
+	"fmt"
 )
 
 // NotIn returns a validation rule that checks if a value os absent from, the given list of values.
@@ -14,7 +15,7 @@ import (
 func NotIn(values ...interface{}) *NotInRule {
 	return &NotInRule{
 		elements: values,
-		message:  "must not be in list",
+		message:  "not_in",
 	}
 }
 
@@ -32,7 +33,7 @@ func (r *NotInRule) Validate(value interface{}) error {
 
 	for _, e := range r.elements {
 		if e == value {
-			return errors.New(r.message)
+			return errors.New(fmt.Sprintf("%s|%+v", r.message, r.elements))
 		}
 	}
 	return nil

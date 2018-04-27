@@ -63,7 +63,7 @@ func main() {
 	)
 	fmt.Println(err)
 	// Output:
-	// must be a valid URL
+	// url
 }
 ```
 
@@ -122,7 +122,7 @@ func main() {
 	err := a.Validate()
 	fmt.Println(err)
 	// Output:
-	// Street: the length must be between 5 and 50; State: must be in a valid format.
+	// Street: the length must be between 5 and 50; State: match.
 }
 ```
 
@@ -158,7 +158,7 @@ err := a.Validate()
 b, _ := json.Marshal(err)
 fmt.Println(string(b))
 // Output:
-// {"street":"the length must be between 5 and 50","state":"must be in a valid format"}
+// {"street":"the length must be between 5 and 50","state":"match"}
 ```
 
 You may modify `validation.ErrorTag` to use a different struct tag name.
@@ -182,7 +182,7 @@ err := validation.Errors{
 }.Filter()
 fmt.Println(err)
 // Output:
-// email: must be a valid email address; zip: cannot be blank.
+// email: email; zip: required.
 ```
 
 In the above example, we build a `validation.Errors` by a list of names and the corresponding validation results. 
@@ -266,7 +266,7 @@ c := Customer{
 err := c.Validate()
 fmt.Println(err)
 // Output:
-// Address: (State: must be in a valid format.); Email: must be a valid email address.
+// Address: (State: match|^[A-Z]{2}$.); Email: email.
 ```
 
 Sometimes, you may want to skip the invocation of a type's `Validate` method. To do so, simply associate
@@ -289,7 +289,7 @@ addresses := []Address{
 err := validation.Validate(addresses)
 fmt.Println(err)
 // Output:
-// 0: (City: cannot be blank; Street: cannot be blank.); 2: (Street: cannot be blank; Zip: must be in a valid format.).
+// 0: (City: required; Street: required.); 2: (Street: required; Zip: match|^[0-9]{5}$.).
 ```
 
 When using `validation.ValidateStruct` to validate a struct, the above validation procedure also applies to those struct 
@@ -348,7 +348,7 @@ err := validation.ValidateStruct(&m,
 )
 fmt.Println(err)
 // Output:
-// Level: cannot be blank; Name: cannot be blank.
+// Level: required; Name: required.
 ```
 
 In the above code, we use `&m.Name` to specify the validation of the `Name` field of the embedded struct `Employee`.
@@ -371,7 +371,7 @@ err := validation.ValidateStruct(&m,
 )
 fmt.Println(err)
 // Output:
-// Level: cannot be blank; Name: cannot be blank.
+// Level: required; Name: required.
 ```
 
 
@@ -462,7 +462,7 @@ of the rules. For example,
 ```go
 data := "2123"
 err := validation.Validate(data,
-	validation.Required.Error("is required"),
+	validation.Required.Error("not_nil"),
 	validation.Match(regexp.MustCompile("^[0-9]{5}$")).Error("must be a string with five digits"),
 )
 fmt.Println(err)

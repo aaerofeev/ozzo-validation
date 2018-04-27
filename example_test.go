@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/is"
+	"github.com/aaerofeev/ozzo-validation"
+	"github.com/aaerofeev/ozzo-validation/is"
 )
 
 type Address struct {
@@ -63,7 +63,7 @@ func Example() {
 	err := c.Validate()
 	fmt.Println(err)
 	// Output:
-	// Address: (State: must be in a valid format.); Email: must be a valid email address.
+	// Address: (State: match|^[A-Z]{2}$.); Email: email.
 }
 
 func Example_second() {
@@ -75,7 +75,7 @@ func Example_second() {
 	)
 	fmt.Println(err)
 	// Output:
-	// must be a valid URL
+	// url
 }
 
 func Example_third() {
@@ -87,7 +87,7 @@ func Example_third() {
 	err := validation.Validate(addresses)
 	fmt.Println(err)
 	// Output:
-	// 0: (City: cannot be blank; Street: cannot be blank.); 2: (Street: cannot be blank; Zip: must be in a valid format.).
+	// 0: (City: required; Street: required.); 2: (Street: required; Zip: match|^[0-9]{5}$.).
 }
 
 func Example_four() {
@@ -106,7 +106,7 @@ func Example_four() {
 	}.Filter()
 	fmt.Println(err)
 	// Output:
-	// email: must be a valid email address; zip: cannot be blank.
+	// email: email; zip: required.
 }
 
 func Example_five() {
@@ -126,5 +126,5 @@ func Example_five() {
 	)
 	fmt.Println(err)
 	// Output:
-	// Level: cannot be blank; Name: cannot be blank.
+	// Level: required; Name: required.
 }

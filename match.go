@@ -7,6 +7,7 @@ package validation
 import (
 	"errors"
 	"regexp"
+	"fmt"
 )
 
 // Match returns a validation rule that checks if a value matches the specified regular expression.
@@ -15,7 +16,7 @@ import (
 func Match(re *regexp.Regexp) *MatchRule {
 	return &MatchRule{
 		re:      re,
-		message: "must be in a valid format",
+		message: "match",
 	}
 }
 
@@ -37,7 +38,7 @@ func (v *MatchRule) Validate(value interface{}) error {
 	} else if isBytes && (len(bs) == 0 || v.re.Match(bs)) {
 		return nil
 	}
-	return errors.New(v.message)
+	return errors.New(fmt.Sprintf("%s|%s", v.message, v.re))
 }
 
 // Error sets the error message for the rule.

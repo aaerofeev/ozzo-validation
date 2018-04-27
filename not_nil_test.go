@@ -25,11 +25,11 @@ func TestNotNil(t *testing.T) {
 		value interface{}
 		err   string
 	}{
-		{"t1", v1, "is required"},
-		{"t2", v2, "is required"},
-		{"t3", v3, "is required"},
-		{"t4", v4, "is required"},
-		{"t5", v5, "is required"},
+		{"t1", v1, "not_nil"},
+		{"t2", v2, "not_nil"},
+		{"t3", v3, "not_nil"},
+		{"t4", v4, "not_nil"},
+		{"t5", v5, "not_nil"},
 		{"t6", "", ""},
 		{"t7", 0, ""},
 	}
@@ -43,8 +43,8 @@ func TestNotNil(t *testing.T) {
 
 func Test_notNilRule_Error(t *testing.T) {
 	r := NotNil
-	assert.Equal(t, "is required", r.message)
+	assert.Equal(t, "not_nil", r.message)
 	r2 := r.Error("123")
-	assert.Equal(t, "is required", r.message)
+	assert.Equal(t, "not_nil", r.message)
 	assert.Equal(t, "123", r2.message)
 }

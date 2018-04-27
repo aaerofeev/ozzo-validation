@@ -22,9 +22,9 @@ func TestMatch(t *testing.T) {
 		{"t1", "[a-z]+", "abc", ""},
 		{"t2", "[a-z]+", "", ""},
 		{"t3", "[a-z]+", v2, ""},
-		{"t4", "[a-z]+", "123", "must be in a valid format"},
+		{"t4", "[a-z]+", "123", "match|[a-z]+"},
 		{"t5", "[a-z]+", []byte("abc"), ""},
-		{"t6", "[a-z]+", []byte("123"), "must be in a valid format"},
+		{"t6", "[a-z]+", []byte("123"), "match|[a-z]+"},
 		{"t7", "[a-z]+", []byte(""), ""},
 		{"t8", "[a-z]+", nil, ""},
 	}
@@ -38,7 +38,7 @@ func TestMatch(t *testing.T) {
 
 func Test_MatchRule_Error(t *testing.T) {
 	r := Match(regexp.MustCompile("[a-z]+"))
-	assert.Equal(t, "must be in a valid format", r.message)
+	assert.Equal(t, "match", r.message)
 	r.Error("123")
 	assert.Equal(t, "123", r.message)
 }

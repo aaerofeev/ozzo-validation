@@ -9,7 +9,7 @@ import "errors"
 // NotNil is a validation rule that checks if a value is not nil.
 // NotNil only handles types including interface, pointer, slice, and map.
 // All other types are considered valid.
-var NotNil = &notNilRule{message: "is required"}
+var NotNil = &notNilRule{message: "not_nil"}
 
 type notNilRule struct {
 	message string

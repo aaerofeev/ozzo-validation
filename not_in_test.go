@@ -20,12 +20,12 @@ func TestNotIn(t *testing.T) {
 		err    string
 	}{
 		{"t0", []interface{}{1, 2}, 0, ""},
-		{"t1", []interface{}{1, 2}, 1, "must not be in list"},
-		{"t2", []interface{}{1, 2}, 2, "must not be in list"},
+		{"t1", []interface{}{1, 2}, 1, "not_in|[1 2]"},
+		{"t2", []interface{}{1, 2}, 2, "not_in|[1 2]"},
 		{"t3", []interface{}{1, 2}, 3, ""},
 		{"t4", []interface{}{}, 3, ""},
 		{"t5", []interface{}{1, 2}, "1", ""},
-		{"t6", []interface{}{1, 2}, &v, "must not be in list"},
+		{"t6", []interface{}{1, 2}, &v, "not_in|[1 2]"},
 		{"t7", []interface{}{1, 2}, v2, ""},
 	}
 
@@ -38,7 +38,7 @@ func TestNotIn(t *testing.T) {
 
 func Test_NotInRule_Error(t *testing.T) {
 	r := NotIn(1, 2, 3)
-	assert.Equal(t, "must not be in list", r.message)
+	assert.Equal(t, "not_in", r.message)
 	r.Error("123")
 	assert.Equal(t, "123", r.message)
 }

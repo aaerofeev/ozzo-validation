@@ -19,10 +19,10 @@ func TestRequired(t *testing.T) {
 		err   string
 	}{
 		{"t1", 123, ""},
-		{"t2", "", "cannot be blank"},
+		{"t2", "", "required"},
 		{"t3", &s1, ""},
-		{"t4", &s2, "cannot be blank"},
-		{"t5", nil, "cannot be blank"},
+		{"t4", &s2, "required"},
+		{"t5", nil, "required"},
 	}
 
 	for _, test := range tests {
@@ -41,9 +41,9 @@ func TestNilOrNotEmpty(t *testing.T) {
 		err   string
 	}{
 		{"t1", 123, ""},
-		{"t2", "", "cannot be blank"},
+		{"t2", "", "required"},
 		{"t3", &s1, ""},
-		{"t4", &s2, "cannot be blank"},
+		{"t4", &s2, "required"},
 		{"t5", nil, ""},
 	}
 
@@ -56,19 +56,19 @@ func TestNilOrNotEmpty(t *testing.T) {
 
 func Test_requiredRule_Error(t *testing.T) {
 	r := Required
-	assert.Equal(t, "cannot be blank", r.message)
+	assert.Equal(t, "required", r.message)
 	assert.False(t, r.skipNil)
 	r2 := r.Error("123")
-	assert.Equal(t, "cannot be blank", r.message)
+	assert.Equal(t, "required", r.message)
 	assert.False(t, r.skipNil)
 	assert.Equal(t, "123", r2.message)
 	assert.False(t, r2.skipNil)
 
 	r = NilOrNotEmpty
-	assert.Equal(t, "cannot be blank", r.message)
+	assert.Equal(t, "required", r.message)
 	assert.True(t, r.skipNil)
 	r2 = r.Error("123")
-	assert.Equal(t, "cannot be blank", r.message)
+	assert.Equal(t, "required", r.message)
 	assert.True(t, r.skipNil)
 	assert.Equal(t, "123", r2.message)
 	assert.True(t, r2.skipNil)
